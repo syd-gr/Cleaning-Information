@@ -19,7 +19,15 @@
             color: white;
             padding: 15px;
         }
-        .container {
+        header {
+            background-color: #004080;
+        }
+        header h2 a {
+            font-weight: bold;
+            color: #FFD700;
+            text-decoration: none;
+        }
+        main.container {
             flex: 1;
             margin: auto;
             width: 500px;
@@ -62,35 +70,53 @@
             margin-top: auto;
             text-align: center;
         }
+
+        @media (max-width: 600px) {
+            main.container {
+                width: 90%;
+                height: auto;
+            }
+            .arrow {
+                font-size: 20px;
+                padding: 8px 12px;
+            }
+        }
     </style>
 </head>
 <body>
 
-<header style="background-color: #004080; padding: 15px; text-align: center;">
+<header>
     <h2>
-        <a href="index.html" target="_blank" style="font-weight: bold; color: #FFD700; text-decoration: none;">
-            Centurion Facilities
-        </a>
+        <a href="index.html" target="_blank">Centurion Facilities</a>
     </h2>
 </header>
 
-
-<div class="container">
+<main class="container">
     <button class="arrow left" onclick="prevImage()">&#9664;</button>
-    <img id="image" src="img/bathroom/1.jpg" alt="Image">
+    <img id="image" src="img/bathroom/1.JPG" alt="Image 1" onerror="this.src='img/bathroom/default.jpg'; this.alt='Image not found';">
     <button class="arrow right" onclick="nextImage()">&#9654;</button>
-</div>
+</main>
 
 <footer>
-    <p>Copyright &copy; 2025 Centurion Facilities</p>
+    <p>&copy; 2025 Centurion Facilities</p>
 </footer>
 
 <script>
     const totalImages = 41;
     let index = 1;
 
+    // Preload all images
+    const images = [];
+    for (let i = 1; i <= totalImages; i++) {
+        const img = new Image();
+        img.src = `img/bathroom/${i}.JPG`;
+        images.push(img);
+    }
+
     function showImage() {
-        document.getElementById("image").src = `img/bathroom/${index}.jpg`;
+        const img = document.getElementById("image");
+        img.src = `img/bathroom/${index}.JPG`;
+        img.alt = `Image ${index}`;
     }
 
     function prevImage() {
@@ -102,7 +128,14 @@
         index = (index + 1 > totalImages) ? 1 : index + 1;
         showImage();
     }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowLeft') prevImage();
+        if (event.key === 'ArrowRight') nextImage();
+    });
 </script>
 
 </body>
 </html>
+
